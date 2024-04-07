@@ -1,0 +1,99 @@
+#include "fence.h"
+#include "troop.h"
+
+#include <QTimer>
+#include <QList>
+#include <QDebug>
+
+Fence::Fence(QObject *parent)
+    : QObject(parent), QGraphicsRectItem(), collisionCount(0), collisionTimerCount(0), upgradeCost(20)
+{
+    health = new Health();
+    fenceImage.load(":/images/fence.png");
+    upgradedFenceImage.load(":/images/upgraded_fence.png");
+
+    upgradeButton = new QPushButton("Upgrade", nullptr);
+    upgradeButton->setFixedSize(80, 30);
+    upgradeButton->setVisible(false);
+    connect(upgradeButton, &QPushButton::clicked, this, &Fence::onUpgradeButtonClicked);
+
+    QTimer* timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(move()));
+    timer->start(50);
+}
+
+void Fence::decreaseHealth()
+{
+    health->reduceHealth();
+
+    if (health->getHealth() <= 0)
+    {
+        delete this;
+    }
+}
+
+void Fence::upgrade()
+{
+    if (upgradeCost <= playerMoney) {  // Assuming playerMoney is a variable that holds the player's available money
+        health->increaseMaxHealth();
+        fenceImage = upgradedFenceImage;
+        upgradeButton->setVisible(false);
+        qDebug() << "Fence upgraded!";
+    } else {
+        qDebug() << "Insufficient funds to upgrade the fence!";
+    }
+}
+
+void Fence::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+    painter->drawImage(rect(), fenceImage);
+
+    qreal width = rect().width() * health->getHealth() / health->getMaxHealth();
+    QRectF healthBarRect(rect().topLeft(), QSizeF(width, 5));
+    painter->fillRect(healthBarRect, Qt::green);
+}
+
+void Fence::move()
+{
+    QList<QGraphicsItem*> collidingItemsList = collidingItems();
+    for (int i = 0; i < collidingItemsList.size(); i++)
+    {
+        if (typeid(*(collidingItemsList[i])) == typeid(Troop) && health->getHealth() > 0)
+        {
+            collisionCount++;
+            collisionTimerCount++;
+
+            if (collisionCount >= 10 && collisionTimerCount >= 10)
+            {
+                decreaseHealth();
+                collisionCount = 0;
+                collisionTimerCount = 0;
+            }
+
+            delete collidingItemsList[i];
+
+            if (health->getHealth() <= 0)
+            {
+                upgradeButton->setVisible(false);
+            }
+            else
+            {
+                upgradeButton->setVisible(true);
+            }
+
+            return;
+        }
+    }
+
+    // Reset the collision count if no collisions occur within 10 seconds
+    if (collisionTimerCount >= 10)
+    {
+        collisionCount = 0;
+        collisionTimerCount = 0;
+    }
+}
+
+void Fence::onUpgradeButtonClicked()
+{
+    upgrade();
+}

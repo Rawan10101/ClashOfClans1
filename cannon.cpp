@@ -1,4 +1,3 @@
-
 #include "cannon.h"
 
 Cannon::Cannon(QWidget *parent, QGraphicsScene* scene)
@@ -13,6 +12,7 @@ Cannon::Cannon(QWidget *parent, QGraphicsScene* scene)
       bulletFired(false),
       bulletMoving(false)
 {
+
     ui->setupUi(this);
     setFocusPolicy(Qt::StrongFocus);
 

@@ -31,6 +31,7 @@ HEADERS += \
     cannon.h \
     fence.h \
     game.h \
+    globalvariables.h \
     health.h \
     player.h \
     startgame.h \
@@ -40,7 +41,17 @@ HEADERS += \
     wizardtower.h \
     workers.h
 
-FORMS +=
+FORMS += \
+    archtower.ui \
+    bullet.ui \
+    cannon.ui \
+    fence.ui \
+    game.ui \
+    health.ui \
+    player.ui \
+    startgame.ui \
+    wizardtower.ui \
+    workers.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

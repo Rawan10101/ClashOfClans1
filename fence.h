@@ -21,15 +21,17 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
 
 public slots:
-    void move();
+    void collide();
     void onUpgradeButtonClicked();
 
 private:
     Health* health;
     QImage fenceImage;
+    QImage upgradedFenceImage;
     QPushButton* upgradeButton;
     int collisionCount;
     int collisionTimerCount;
+    int upgradeCost;
 };
 
 #endif // FENCE_H

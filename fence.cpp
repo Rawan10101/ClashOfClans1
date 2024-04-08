@@ -4,7 +4,7 @@
 #include <QTimer>
 #include <QList>
 #include <QDebug>
-
+#include "globalvariables.h"
 Fence::Fence(QObject *parent)
     : QObject(parent), QGraphicsRectItem(), collisionCount(0), collisionTimerCount(0), upgradeCost(20)
 {
@@ -53,7 +53,7 @@ void Fence::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
     painter->fillRect(healthBarRect, Qt::green);
 }
 
-void Fence::move()
+void Fence::collide()
 {
     QList<QGraphicsItem*> collidingItemsList = collidingItems();
     for (int i = 0; i < collidingItemsList.size(); i++)
@@ -63,23 +63,22 @@ void Fence::move()
             collisionCount++;
             collisionTimerCount++;
 
-            if (collisionCount >= 10 && collisionTimerCount >= 10)
+            if (collisionCount >= 10 )
             {
                 decreaseHealth();
                 collisionCount = 0;
                 collisionTimerCount = 0;
             }
 
-            delete collidingItemsList[i];
 
-            if (health->getHealth() <= 0)
-            {
-                upgradeButton->setVisible(false);
-            }
-            else
-            {
-                upgradeButton->setVisible(true);
-            }
+         //   if (health->getHealth() <= 0)
+           // {
+             //   upgradeButton->setVisible(false);
+            //}
+            //else
+            //{
+              //  upgradeButton->setVisible(true);
+            //}
 
             return;
         }

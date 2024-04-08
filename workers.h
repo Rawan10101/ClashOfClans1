@@ -1,22 +1,24 @@
 #ifndef WORKERS_H
 #define WORKERS_H
 
-#include <QDialog>
+#include <QObject>
+#include <QGraphicsPixmapItem>
+#include <QPointF>
 
-namespace Ui {
-class Workers;
-}
-
-class Workers : public QDialog
+class Workers : public QObject, public QGraphicsPixmapItem
 {
     Q_OBJECT
-
 public:
-    explicit Workers(QWidget *parent = nullptr);
-    ~Workers();
+    Workers(QGraphicsItem *parent = nullptr);
+
+public slots:
+    void showWorker();
+    void hideWorker();
+    void rebuildStructure(QPointF targetPoint);
 
 private:
-    Ui::Workers *ui;
+    bool isDestroyed;
+    QPointF targetPosition;
 };
 
 #endif // WORKERS_H

@@ -13,6 +13,7 @@ SOURCES += \
     archtower.cpp \
     bullet.cpp \
     cannon.cpp \
+    cannon1.cpp \
     fence.cpp \
     health.cpp \
     main.cpp \
@@ -29,6 +30,7 @@ HEADERS += \
     archtower.h \
     bullet.h \
     cannon.h \
+    cannon1.h \
     fence.h \
     game.h \
     globalvariables.h \

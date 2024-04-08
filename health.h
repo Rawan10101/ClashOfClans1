@@ -7,10 +7,15 @@ public:
     Health();
 
     int getHealth() const;
-    void reduceHealth();
+    int getMaxHealth();
+    void setHealth(int);
+    void setMaxHealth(int);
+    void decrementHealth();
+    void incrementHealth();
 
 private:
     int health;
+    int maxHealth;
 };
 
 #endif // HEALTH_H

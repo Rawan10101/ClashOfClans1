@@ -1,20 +1,32 @@
 #include "health.h"
 
-Health::Health()
-    : health(100)
-{
-}
+Health::Health(){}
 
 int Health::getHealth() const
 {
     return health;
 }
 
-void Health::reduceHealth()
+int Health::getMaxHealth()
 {
-    health -= 10;
-    if (health < 0)
-    {
-        health = 0;
-    }
+    return maxHealth;
+}
+void Health::setHealth(int number)
+{
+    health = number;
+}
+
+void Health::setMaxHealth(int number)
+{
+    maxHealth = number;
+}
+
+void Health::decrementHealth()
+{
+    health--;
+}
+
+void Health::incrementHealth()
+{
+    health++;
 }

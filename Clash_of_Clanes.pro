@@ -13,7 +13,6 @@ SOURCES += \
     archtower.cpp \
     bullet.cpp \
     cannon.cpp \
-    cannon1.cpp \
     fence.cpp \
     health.cpp \
     main.cpp \
@@ -30,7 +29,6 @@ HEADERS += \
     archtower.h \
     bullet.h \
     cannon.h \
-    cannon1.h \
     fence.h \
     game.h \
     globalvariables.h \
@@ -43,17 +41,7 @@ HEADERS += \
     wizardtower.h \
     workers.h
 
-FORMS += \
-    archtower.ui \
-    bullet.ui \
-    cannon.ui \
-    fence.ui \
-    game.ui \
-    health.ui \
-    player.ui \
-    startgame.ui \
-    wizardtower.ui \
-    workers.ui
+FORMS +=
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

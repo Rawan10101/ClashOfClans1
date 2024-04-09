@@ -2,25 +2,28 @@
 #define BULLET_H
 
 #include <QGraphicsItem>
-#include <QPainter>
+#include <QGraphicsPixmapItem>
+#include <QObject>
+//#include <QPainter>
 
-class Bullet : public QGraphicsItem
+class Bullet : public QObject, public QGraphicsPixmapItem
 {
+    Q_OBJECT
 public:
     Bullet();
 
     void setDirection(int x, int y);
     void move();
-    bool collidesWithEnemy();
+    //bool collidesWithEnemy();
 
 protected:
-    QRectF boundingRect() const override;
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
+    //QRectF boundingRect() const override;
+    //void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 
 private:
     int directionX;
     int directionY;
-    qreal speed;
+    //qreal speed;
 };
 
 #endif // BULLET_H

@@ -24,7 +24,7 @@ Fence::Fence(QObject *parent)
 
 void Fence::decreaseHealth()
 {
-    health->reduceHealth();
+    health->decrementHealth();
 
     if (health->getHealth() <= 0)
     {
@@ -35,7 +35,8 @@ void Fence::decreaseHealth()
 void Fence::upgrade()
 {
     if (upgradeCost <= playerMoney) {  // Assuming playerMoney is a variable that holds the player's available money
-        health->increaseMaxHealth();
+        health->setMaxHealth(health->getMaxHealth()*1.5); //increase max health by 1.5 every upgrade
+        health->setHealth(health->getMaxHealth()); //sets health back to max health
         fenceImage = upgradedFenceImage;
         upgradeButton->setVisible(false);
         qDebug() << "Fence upgraded!";

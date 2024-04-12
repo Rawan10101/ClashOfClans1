@@ -1,18 +1,18 @@
 #include "player.h"
-#include "ui_player.h"
+//#include "ui_player.h"
 #include <QMouseEvent> // Add this line
 
 Player::Player(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::Player),
+  //  ui(new Ui::Player),
     isCannonSelected(false)
 {
-    ui->setupUi(this);
+   // ui->setupUi(this);
 }
 
 Player::~Player()
 {
-    delete ui;
+   // delete ui;
 }
 
 void Player::mousePressEvent(QMouseEvent *event)

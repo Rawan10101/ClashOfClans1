@@ -43,7 +43,7 @@ void Tower::move()
     {
         if (typeid(*(collidingItemsList[i])) == typeid(Troop) && health1->getHealth() > 0)
         {
-            health1->reduceHealth();
+            health1->decrementHealth();
 
             delete collidingItemsList[i];
             return;

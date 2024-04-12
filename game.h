@@ -1,33 +1,36 @@
+// Game.h
 #ifndef GAME_H
 #define GAME_H
 
-#include <QObject>
+#include <QWidget>
+#include <QGridLayout>
 #include <QVector>
-#include <QGraphicsScene>
-#include <QGraphicsView>
-#include <QPushButton>
-#include <QProgressBar>
 
-#include <QGraphicsView>
+class QGraphicsScene;
+class QGraphicsView;
 
-class Game : public QGraphicsView
+class Game : public QWidget
 {
     Q_OBJECT
+
 public:
-    Game(QWidget *parent = nullptr);
+    explicit Game(QWidget *parent = nullptr);
 
-
-    //explicit Game(QObject *parent = nullptr);
-    void loadClanDesignFromFile(const QString& filePath);
     void printClanDesign();
     void displayClanDesign();
 
 private:
+    QGridLayout *layout;
     QVector<QVector<int>> clanDesign;
     QGraphicsScene* scene;
-    QPushButton* setting;
-    QProgressBar* money;
-    QProgressBar* elixir;
+    QGraphicsView* view;
+
+    int cellSize;
+    int sceneWidth;
+    int sceneHeight;
+
+    void adjustSceneSize();
+    QPixmap scalePixmap(const QPixmap& pixmap, int width, int height);
 };
 
 #endif // GAME_H

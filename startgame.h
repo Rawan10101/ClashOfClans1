@@ -2,24 +2,21 @@
 #define STARTGAME_H
 
 #include <QDialog>
-#include <QThread>
-#include<QMediaPlayer>
-#include<QGraphicsScene>
-#include<QGraphicsView>
-namespace Ui {
-class StartGame;
-}
+#include <QMediaPlayer>
+
+// Include the generated header file for the UI class
+#include "ui_startgame.h"
 
 class StartGame : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit StartGame(QWidget *parent = nullptr);
+    StartGame(QWidget *parent = nullptr);
     ~StartGame();
 
+public slots:
     void start_loading();
-    QGraphicsScene* scene;
 
 private slots:
     void on_pushButton_clicked();
@@ -28,7 +25,7 @@ private slots:
 
 private:
     Ui::StartGame *ui;
-    QGraphicsView* view;
+
 
 };
 

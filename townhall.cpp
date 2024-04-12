@@ -16,7 +16,7 @@ TownHall::~TownHall()
 
 void TownHall::reduceHealth()
 {
-    health->reduceHealth();
+    health->decrementHealth();
 
     if (health->getHealth() <= 0)
     {

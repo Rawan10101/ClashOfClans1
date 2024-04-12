@@ -6,6 +6,7 @@
 #include "cannon.h"
 #include "bullet.h"
 #include "health.h"
+#include <QGraphicsRectItem>
 
 Cannon::Cannon()
 {

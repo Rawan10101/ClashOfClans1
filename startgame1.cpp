@@ -1,9 +1,12 @@
-#include "startgame.h"
-#include "ui_startgame.h"
+#include "startgame1.h"
+#include "ui_startgame1.h"
+
 #include <QMediaPlayer>
 #include <QPixmap>
+#include <QThread>
+#include <QEventLoop>
 
-StartGame::StartGame(QWidget *parent) : QDialog(parent), ui(new Ui::StartGame)
+StartGame1::StartGame1(QWidget *parent) : QDialog(parent), ui(new Ui::StartGame1)
 {
     ui->setupUi(this);
 
@@ -14,17 +17,17 @@ StartGame::StartGame(QWidget *parent) : QDialog(parent), ui(new Ui::StartGame)
     this->setPalette(palette);
 
     QMediaPlayer *startgamemusic = new QMediaPlayer();
-    startgamemusic->setSource(QUrl::fromLocalFile("qrc:/sounds/mixkit-bonus-extra-in-a-video-game-2064.wav"));
+ //   startgamemusic->setMedia(QUrl::fromLocalFile("qrc:/sounds/mixkit-bonus-extra-in-a-video-game-2064.wav"));
     // startgamemusic->setVolume(0.25f);  // Set the volume (0-100)
     startgamemusic->play();
 }
 
-StartGame::~StartGame()
+StartGame1::~StartGame1()
 {
     delete ui;
 }
 
-void StartGame::start_loading()
+void StartGame1::start_loading()
 {
     for (int value = ui->progressBar->minimum(); value < ui->progressBar->maximum(); value++)
     {
@@ -35,8 +38,17 @@ void StartGame::start_loading()
     }
 }
 
-void StartGame::on_pushButton_clicked() {}
+void StartGame1::on_pushButton_clicked()
+{
+    // Handle push button click event
+}
 
-void StartGame::on_groupBox_Background_clicked() {}
+void StartGame1::on_groupBox_Background_clicked()
+{
+    // Handle group box background click event
+}
 
-void StartGame::on_label_value_linkActivated(const QString &link) {}
+void StartGame1::on_label_value_linkActivated(const QString &link)
+{
+    // Handle link activation event for label_value
+}

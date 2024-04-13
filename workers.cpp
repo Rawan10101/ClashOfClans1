@@ -9,7 +9,7 @@
 Workers::Workers(QGraphicsItem *parent)
     : QObject(), QGraphicsPixmapItem(parent), isDestroyed(false)
 {
-    QPixmap workerImage(":/images/worker.png");
+    QPixmap workerImage("C:/Users/HP/Desktop/file1/Builder_info.webp");
     setPixmap(workerImage.scaled(30, 30));
 
     QTimer* timer = new QTimer(this);

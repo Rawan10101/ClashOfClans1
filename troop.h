@@ -2,12 +2,13 @@
 #define TROOP_H
 
 #include <QDialog>
+#include <QObject>
 
 namespace Ui {
 class Troop;
 }
 
-class Troop : public QDialog
+class Troop : public QObject
 {
     Q_OBJECT
 

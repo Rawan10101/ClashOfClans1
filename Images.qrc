@@ -2,10 +2,11 @@
     <qresource prefix="/Background"/>
     <qresource prefix="/">
         <file>images/cannonball.png</file>
-        <file>../file1/Builder_info.webp</file>
-        <file>../file1/Cannon21G.webp</file>
-        <file>../file1/Clan_Castle11.webp</file>
-        <file>../file1/Map_Classic_Scenery.webp</file>
-        <file>../file1/Wall1.webp</file>
+        <file>images/Cannon.png</file>
+        <file>images/Castle.png</file>
+        <file>images/Wall.png</file>
+        <file>images/Worker.png</file>
+        <file>File.txt</file>
+        <file>images/Background.png</file>
     </qresource>
 </RCC>

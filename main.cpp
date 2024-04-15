@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
     //  QString filePath = QCoreApplication::applicationDirPath() + "file:///C:/Users/HP/Desktop/file1/File.txt";
     //  w.loadClanDesignFromFile(filePath);
     // w.printClanDesign();
-    w.displayClanDesign();
+   w.displayClanDesign();
     w.show();
 
     return a.exec();

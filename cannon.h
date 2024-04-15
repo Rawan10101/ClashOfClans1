@@ -1,6 +1,8 @@
 #ifndef CANNON_H
 #define CANNON_H
 #include <QMouseEvent>
+#include <QObject>
+#include <QGraphicsPixmapItem>
 #include "health.h"
 #include "bullet.h"
 
@@ -9,16 +11,23 @@
     Q_OBJECT
 
 public:
-    Cannon();
+    Cannon(QPixmap pixmap);
     void upgrade(); //to upgrade cannon
     void mousePressEvent(QMouseEvent *event); //to release bullet on click
     void paintEvent(QPaintEvent* event); //for health bar
     void cannonAttacked(); //for handling collision with enemy
+    void setBulletDirection(int x, int y);
+    void shootBullet();
+
 
 private:
-    Health* health = new Health;
+    Health* health;
     Bullet* bullet;
-
+    int bulletDirectionX;
+    int bulletDirectionY;
+    bool bulletMoving;
+    bool bulletFired;
+    QTimer *bulletTimer;
 };
 
 #endif // CANNON_H

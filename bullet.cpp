@@ -34,7 +34,7 @@ void Bullet::move()
     QList<QGraphicsItem *> colliding_items = collidingItems();
     for (int i = 0, n = colliding_items.size(); i < n; i++)
     {
-        if (typeid(*(colliding_items[i])) == typeid(troop))
+        if (typeid(*(colliding_items[i])) == typeid(Troop))
         {
             //call function for when enemy is hit from enemy troop class
             scene()->removeItem(this);

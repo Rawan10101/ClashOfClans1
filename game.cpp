@@ -1,4 +1,7 @@
 #include "Game.h"
+#include "cannon.h"
+#include "fence.h"
+#include "townhall.h"
 #include <QFile>
 #include <QTextStream>
 #include <QDebug>
@@ -14,9 +17,9 @@
 Game::Game(QWidget *parent) : QWidget(parent)
 {
     QFile file("C:/Users/HP/Desktop/file1/File.txt"); // Open the file
-    if (!file.open(QFile::ReadOnly | QFile::Text))
+    if (file.open(QFile::ReadOnly | QFile::Text))
     {
-        QMessageBox::information(this, "Error", "Failed to open file: C:/Users/HP/Desktop/file1/File.txt");
+        QMessageBox::information(this, "Error", "Failed to open file: File.txt");
         return;
     }
 
@@ -27,16 +30,15 @@ Game::Game(QWidget *parent) : QWidget(parent)
     view->setStyleSheet("background: transparent; border: 0px");
     layout->addWidget(view);
 
-    QPixmap backgroundPixmap("C:/Users/HP/Desktop/file1/thumb.jpg"); //Set the background image
+    QPixmap backgroundPixmap(":/images/Background.png"); // Set the background image
     if (!backgroundPixmap.isNull())
     {
-        QGraphicsPixmapItem* backgroundItem = new QGraphicsPixmapItem(backgroundPixmap);
-        scene->addItem(backgroundItem); // Add the background to the scene
+        view->setBackgroundBrush(backgroundPixmap); // Set the background image as the view's background brush
         sceneWidth = backgroundPixmap.width(); // Set the scene width equal to the background image width
-        sceneHeight = backgroundPixmap.height(); // Set the scene height == the background image height
+        sceneHeight = backgroundPixmap.height(); // Set the scene height equal to the background image height
     }
 
-    clanDesign.clear();
+    clanDesign.clear(); // Clear the clan design vector
 
     QTextStream in(&file);
 
@@ -60,16 +62,16 @@ Game::Game(QWidget *parent) : QWidget(parent)
     }
 
     file.close();
-    adjustSceneSize(); // Function at the end will adjust the size of the scene but based on the loaded clan design
+    adjustSceneSize(); // Adjust the size of the scene based on the loaded clan design
+    displayClanDesign(); // Display the clan design on the scene
 }
-
-
 
 void Game::displayClanDesign()
 {
     const int fenceSize = 200;
     const int castleSize = 80;
     const int cannonSize = 60;
+
     for (int i = 0; i < clanDesign.size(); i++)
     {
         for (int j = 0; j < clanDesign[i].size(); j++)
@@ -84,18 +86,33 @@ void Game::displayClanDesign()
                 // Use an empty pixmap for case 0
                 pixmap = QPixmap();
                 break;
-            case 1:
-                pixmap.load("C:/Users/HP/Desktop/file1/Clan_Castle11.webp");
+            case 1: // castle
+            {
+                pixmap.load(":/images/Castle.png");
                 pixmap = scalePixmap(pixmap, castleSize, castleSize);
-                break;
-            case 2:
-                pixmap.load("C:/Users/HP/Desktop/file1/Cannon21G.webp");
+                Townhall* townhall = new Townhall(pixmap);
+                townhall->setPos(j * cellSize, i * cellSize);
+                scene->addItem(townhall);
+            }
+            break;
+            case 2: // cannon
+            {
+                pixmap.load(":/images/Cannon.png");
                 pixmap = scalePixmap(pixmap, cannonSize, cannonSize);
-                break;
-            case 3:
-                pixmap.load("C:/Users/HP/Desktop/file1/Wall1.webp");
+                Cannon* cannon = new Cannon(pixmap);
+                cannon->setPos(j * cellSize, i * cellSize);
+                scene->addItem(cannon);
+            }
+            break;
+            case 3: // fence
+            {
+                pixmap.load(":/images/Wall.png");
                 pixmap = scalePixmap(pixmap, fenceSize, fenceSize);
-                break;
+                Fence* fence = new Fence(pixmap);
+                fence->setPos(j * cellSize, i * cellSize);
+                scene->addItem(fence);
+            }
+            break;
             default:
                 break;
             }
@@ -103,15 +120,14 @@ void Game::displayClanDesign()
             if (!pixmap.isNull())
             {
                 QGraphicsPixmapItem* item = new QGraphicsPixmapItem(pixmap); // Create a pixmap with the current pixmap
-                item->setPos(j * cellSize , i * cellSize);   // Set the position of the pixmap item
+                item->setPos(j * cellSize, i * cellSize);   // Set the position of the pixmap item
                 scene->addItem(item); // Add the pixmap to the scene
             }
         }
     }
 }
 
-
-QPixmap Game::scalePixmap(const QPixmap& pixmap, int width, int height) // Scale a pixmap to fit the scene and our dimensions
+QPixmap Game::scalePixmap(const QPixmap& pixmap, int width, int height)
 {
     if (pixmap.width() <= width && pixmap.height() <= height)
     {
@@ -132,12 +148,12 @@ void Game::adjustSceneSize() {
 
         // Adjust the size of the scene to fit the widget
         qreal scale = qMin((widgetWidth - x) / qreal(sceneWidth),
-                           (widgetHeight - x) / qreal(sceneHeight));
+  (widgetHeight - x) / qreal(sceneHeight));
         int newSceneWidth = int(sceneWidth * scale); //  the scene width
         int newSceneHeight = int(sceneHeight * scale); // the scene height
 
         // Set the background to cover the whole scene
-        QPixmap backgroundPixmap("C:/Users/HP/Desktop/file1/thumb.jpg");
+        QPixmap backgroundPixmap(":/images/Background.png");
         if (!backgroundPixmap.isNull())
         {
             QPixmap scaledBackgroundPixmap = backgroundPixmap.scaled(newSceneWidth, newSceneHeight, Qt::IgnoreAspectRatio, Qt::SmoothTransformation); // Scale the background pixmap to fit the new scene dimensions

@@ -1,22 +1,22 @@
-#ifndef WIZARDTOWER_H
-#define WIZARDTOWER_H
+// #ifndef WIZARDTOWER_H
+// #define WIZARDTOWER_H
 
-#include <QDialog>
+// #include <QDialog>
 
-namespace Ui {
-class WizardTower;
-}
+// namespace Ui {
+// class WizardTower;
+// }
 
-class WizardTower : public QDialog
-{
-    Q_OBJECT
+// class WizardTower : public QDialog
+// {
+//     Q_OBJECT
 
-public:
-    explicit WizardTower(QWidget *parent = nullptr);
-    ~WizardTower();
+// public:
+//     explicit WizardTower(QWidget *parent = nullptr);
+//     ~WizardTower();
 
-private:
-    Ui::WizardTower *ui;
-};
+// private:
+//     Ui::WizardTower *ui;
+// };
 
-#endif // WIZARDTOWER_H
+// #endif // WIZARDTOWER_H

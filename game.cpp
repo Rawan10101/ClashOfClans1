@@ -17,7 +17,7 @@
 Game::Game(QWidget *parent) : QWidget(parent)
 {
     QFile file("C:/Users/HP/Desktop/file1/File.txt"); // Open the file
-    if (file.open(QFile::ReadOnly | QFile::Text))
+    if (!file.open(QFile::ReadOnly | QFile::Text))
     {
         QMessageBox::information(this, "Error", "Failed to open file: File.txt");
         return;
@@ -63,7 +63,8 @@ Game::Game(QWidget *parent) : QWidget(parent)
 
     file.close();
     adjustSceneSize(); // Adjust the size of the scene based on the loaded clan design
-    displayClanDesign(); // Display the clan design on the scene
+//    displayClanDesign(); // Display the clan design on the scene
+    qDebug() << "test";
 }
 
 void Game::displayClanDesign()

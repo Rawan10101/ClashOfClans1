@@ -16,7 +16,7 @@
 
 Game::Game(QWidget *parent) : QWidget(parent)
 {
-    QFile file("C:/Users/HP/Desktop/file1/File.txt"); // Open the file
+    QFile file(":/File.txt"); // Open the file
     if (!file.open(QFile::ReadOnly | QFile::Text))
     {
         QMessageBox::information(this, "Error", "Failed to open file: File.txt");
@@ -28,6 +28,8 @@ Game::Game(QWidget *parent) : QWidget(parent)
     scene = new QGraphicsScene(this);
     view = new QGraphicsView(scene);
     view->setStyleSheet("background: transparent; border: 0px");
+    view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     layout->addWidget(view);
 
     QPixmap backgroundPixmap(":/images/Background.png"); // Set the background image
@@ -57,73 +59,68 @@ Game::Game(QWidget *parent) : QWidget(parent)
             else
                 row.append(0);
         }
-
         clanDesign.append(row);
     }
 
     file.close();
-    adjustSceneSize(); // Adjust the size of the scene based on the loaded clan design
-//    displayClanDesign(); // Display the clan design on the scene
-    qDebug() << "test";
+    //adjustSceneSize(); // Adjust the size of the scene based on the loaded clan design
+    displayClanDesign(); // Display the clan design on the scene
+    qDebug() << clanDesign[0][1] << "test";
+    scene->setSceneRect(0,0,clanDesign.size()*50,clanDesign[0].size()*50);
+    view->resize(clanDesign.size()*50,clanDesign[0].size()*50);
 }
 
 void Game::displayClanDesign()
 {
-    const int fenceSize = 200;
-    const int castleSize = 80;
-    const int cannonSize = 60;
+    const int fenceSize = 50;
+    const int castleSize = 50;
+    const int cannonSize = 50;
 
+
+    //error here
     for (int i = 0; i < clanDesign.size(); i++)
     {
         for (int j = 0; j < clanDesign[i].size(); j++)
         {
             int element = clanDesign[i][j]; // Get the element at the current position
 
-            QPixmap pixmap;
-
-            switch (element)
+            if(element == 0)
             {
-            case 0:
                 // Use an empty pixmap for case 0
-                pixmap = QPixmap();
-                break;
-            case 1: // castle
+                //break; //removing break causes a crash
+            }
+            else if(element == 1) // castle
             {
-                pixmap.load(":/images/Castle.png");
-                pixmap = scalePixmap(pixmap, castleSize, castleSize);
-                Townhall* townhall = new Townhall(pixmap);
-                townhall->setPos(j * cellSize, i * cellSize);
+                QPixmap piTest(":/images/Castle.png");
+                piTest = piTest.scaled(50,50);
+                Townhall* townhall = new Townhall(piTest);
+                townhall->setPos(j * castleSize, i * castleSize);
+               // townhall->setPos(50,50);
                 scene->addItem(townhall);
             }
-            break;
-            case 2: // cannon
+            else if(element == 2) // cannon
             {
-                pixmap.load(":/images/Cannon.png");
-                pixmap = scalePixmap(pixmap, cannonSize, cannonSize);
-                Cannon* cannon = new Cannon(pixmap);
-                cannon->setPos(j * cellSize, i * cellSize);
-                scene->addItem(cannon);
+                //pixmap.load(":/images/Cannon.png");
+                //pixmap = scalePixmap(pixmap, cannonSize, cannonSize);
+                //Cannon* cannon = new Cannon(pixmap);
+                //cannon->setPos(j * cellSize, i * cellSize);
+                //scene->addItem(cannon);
             }
-            break;
-            case 3: // fence
+            else if(element == 3) // fence
             {
-                pixmap.load(":/images/Wall.png");
-                pixmap = scalePixmap(pixmap, fenceSize, fenceSize);
-                Fence* fence = new Fence(pixmap);
-                fence->setPos(j * cellSize, i * cellSize);
-                scene->addItem(fence);
-            }
-            break;
-            default:
-                break;
+                //pixmap.load(":/images/Wall.png");
+                //pixmap = scalePixmap(pixmap, fenceSize, fenceSize);
+                //Fence* fence = new Fence(pixmap);
+                //fence->setPos(j * cellSize, i * cellSize);
+                //scene->addItem(fence);
             }
 
-            if (!pixmap.isNull())
-            {
-                QGraphicsPixmapItem* item = new QGraphicsPixmapItem(pixmap); // Create a pixmap with the current pixmap
-                item->setPos(j * cellSize, i * cellSize);   // Set the position of the pixmap item
-                scene->addItem(item); // Add the pixmap to the scene
-            }
+     //       if (!pixmap.isNull())
+       //     {
+         //       QGraphicsPixmapItem* item = new QGraphicsPixmapItem(pixmap); // Create a pixmap with the current pixmap
+           //     item->setPos(j * cellSize, i * cellSize);   // Set the position of the pixmap item
+              //  scene->addItem(item); // Add the pixmap to the scene
+           // }
         }
     }
 }

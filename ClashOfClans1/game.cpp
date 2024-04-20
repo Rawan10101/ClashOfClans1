@@ -28,19 +28,18 @@ Game::Game(QWidget *parent) : QWidget(parent)
     scene = new QGraphicsScene(this);
     view = new QGraphicsView(scene);
     view->setStyleSheet("background: transparent; border: 0px");
-    view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     layout->addWidget(view);
 
-    QPixmap backgroundPixmap(":/images/Background.png"); // Set the background image
+    QPixmap backgroundPixmap(":/images/Background.png"); //Set the background image
     if (!backgroundPixmap.isNull())
     {
-        view->setBackgroundBrush(backgroundPixmap); // Set the background image as the view's background brush
+        QGraphicsPixmapItem* backgroundItem = new QGraphicsPixmapItem(backgroundPixmap);
+        scene->addItem(backgroundItem); // Add the background to the scene
         sceneWidth = backgroundPixmap.width(); // Set the scene width equal to the background image width
-        sceneHeight = backgroundPixmap.height(); // Set the scene height equal to the background image height
+        sceneHeight = backgroundPixmap.height(); // Set the scene height == the background image height
     }
 
-    clanDesign.clear(); // Clear the clan design vector
+    clanDesign.clear(); //clan design vector
 
     QTextStream in(&file);
 
@@ -59,73 +58,80 @@ Game::Game(QWidget *parent) : QWidget(parent)
             else
                 row.append(0);
         }
+
         clanDesign.append(row);
     }
 
     file.close();
-    //adjustSceneSize(); // Adjust the size of the scene based on the loaded clan design
-    displayClanDesign(); // Display the clan design on the scene
-    qDebug() << clanDesign[0][1] << "test";
-    scene->setSceneRect(0,0,clanDesign.size()*50,clanDesign[0].size()*50);
-    view->resize(clanDesign.size()*50,clanDesign[0].size()*50);
+    adjustSceneSize(); // Function at the end will adjust the size of the scene but based on the loaded clan design
 }
+
+
 
 void Game::displayClanDesign()
 {
-    const int fenceSize = 50;
-    const int castleSize = 50;
-    const int cannonSize = 50;
-
-
-    //error here
+    const int fenceSize = 200;
+    const int castleSize = 80;
+    const int cannonSize = 60;
     for (int i = 0; i < clanDesign.size(); i++)
     {
         for (int j = 0; j < clanDesign[i].size(); j++)
         {
             int element = clanDesign[i][j]; // Get the element at the current position
 
-            if(element == 0)
+            QPixmap pixmap;
+
+            switch (element)
             {
+            case 0:
                 // Use an empty pixmap for case 0
-                //break; //removing break causes a crash
-            }
-            else if(element == 1) // castle
+                pixmap = QPixmap();
+                break;
+            case 1: //castle
             {
-                QPixmap piTest(":/images/Castle.png");
-                piTest = piTest.scaled(50,50);
-                Townhall* townhall = new Townhall(piTest);
-                townhall->setPos(j * castleSize, i * castleSize);
-               // townhall->setPos(50,50);
+                pixmap.load(":/images/Castle.png");
+                pixmap = scalePixmap(pixmap, castleSize, castleSize);
+                Townhall* townhall = new Townhall(pixmap);
+                townhall->setPos(j * cellSize , i * cellSize);
                 scene->addItem(townhall);
+
             }
-            else if(element == 2) // cannon
+            break;
+            case 2: //cannon
             {
-                //pixmap.load(":/images/Cannon.png");
-                //pixmap = scalePixmap(pixmap, cannonSize, cannonSize);
-                //Cannon* cannon = new Cannon(pixmap);
-                //cannon->setPos(j * cellSize, i * cellSize);
-                //scene->addItem(cannon);
+                pixmap.load(":/images/Cannon.png");
+                pixmap = scalePixmap(pixmap, cannonSize, cannonSize);
+                Cannon* cannon = new Cannon(pixmap);
+                cannon->setPos(j * cellSize , i * cellSize);
+                scene->addItem(cannon);
             }
-            else if(element == 3) // fence
+            break;
+            case 3: //fence
             {
-                //pixmap.load(":/images/Wall.png");
-                //pixmap = scalePixmap(pixmap, fenceSize, fenceSize);
-                //Fence* fence = new Fence(pixmap);
-                //fence->setPos(j * cellSize, i * cellSize);
-                //scene->addItem(fence);
+                pixmap.load(":/images/Wall.png");
+                pixmap = scalePixmap(pixmap, fenceSize, fenceSize);
+                Fence* fence = new Fence(pixmap);
+                fence->setPos(j * cellSize , i * cellSize);
+                scene->addItem(fence);
+
+            }
+            break;
+            default:
+                break;
             }
 
-     //       if (!pixmap.isNull())
-       //     {
-         //       QGraphicsPixmapItem* item = new QGraphicsPixmapItem(pixmap); // Create a pixmap with the current pixmap
-           //     item->setPos(j * cellSize, i * cellSize);   // Set the position of the pixmap item
-              //  scene->addItem(item); // Add the pixmap to the scene
-           // }
+            // if (!pixmap.isNull())
+            // {
+            //     QGraphicsPixmapItem* item = new QGraphicsPixmapItem(pixmap); // Create a pixmap with the current pixmap
+            //     item->setPos(j * cellSize , i * cellSize);   // Set the position of the pixmap item
+            //     scene->addItem(item); // Add the pixmap to the scene
+            // }
         }
     }
 }
 
-QPixmap Game::scalePixmap(const QPixmap& pixmap, int width, int height)
+
+QPixmap Game::scalePixmap(const QPixmap& pixmap, int width, int height) // Scale a pixmap to fit the scene and our dimensions
 {
     if (pixmap.width() <= width && pixmap.height() <= height)
     {
@@ -146,7 +152,7 @@ void Game::adjustSceneSize() {
 
         // Adjust the size of the scene to fit the widget
         qreal scale = qMin((widgetWidth - x) / qreal(sceneWidth),
-  (widgetHeight - x) / qreal(sceneHeight));
+                           (widgetHeight - x) / qreal(sceneHeight));
         int newSceneWidth = int(sceneWidth * scale); //  the scene width
         int newSceneHeight = int(sceneHeight * scale); // the scene height
 

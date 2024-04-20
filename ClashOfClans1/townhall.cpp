@@ -1,13 +1,10 @@
 #include "townhall.h"
-#include <QDebug>
+
 Townhall::Townhall(QPixmap pixmap)
 {
-    //health = new Health();
-    //health->setMaxHealth(10); //adjust max health later
+    health->setMaxHealth(10); //adjust max health later
     this->setPixmap(pixmap); //pixmap is sent from game.cpp
-    qDebug() << "testing townhall";
-    //health->updateHealthBar();
-
+    health->setHealthBar(this->x(), this->y());
     destroyed = 0; //bool variable to indicate if townhall got destroyed
 }
 
@@ -22,13 +19,22 @@ void Townhall::townhallAttacked() //to handle collision with enemy
     health->decrementHealth();
     if (health->getHealth() <= 0) // is destroyed
     {
+        bool collisionStartTime;
+        collisionStartTime = QDateTime::currentDateTime().toTime_t();
+        if (QDateTime::currentDateTime().toTime_t() - collisionStartTime >= 30)
+        {
+            health->decrementHealth();
+        }
+        else if (collidingWithCastle)
+        {
+            collidingWithObject = false;
+
+        }
         destroyed = 1;
         //delete this;
         //update health bar
         //message
         //sound
-
-    }
 }
 
 bool Townhall::getStatus()

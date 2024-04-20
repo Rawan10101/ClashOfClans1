@@ -3,21 +3,27 @@
 
 #include <QDialog>
 #include <QObject>
+#include <QTimer>
+#include "townhall.h"
+#include "workers.h"
 
-namespace Ui {
-class Troop;
-}
 
-class Troop : public QObject
+class Troop : public QObject, public GraphicsPixmapItem
 {
     Q_OBJECT
 
-public:
-    explicit Troop(QWidget *parent = nullptr);
-    ~Troop();
+    QTimer* timer = new QTimer();
 
-private:
-    Ui::Troop *ui;
+
+public:
+    Troop();
+
+
+public slots:
+    void move();
+    void castle_collision(Townhall* castle);
 };
 
 #endif // TROOP_H
+
+

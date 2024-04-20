@@ -1,34 +1,38 @@
-// #include "player.h"
-// //#include "ui_player.h"
-// #include <QMouseEvent> // Add this line
+#include "player.h"
+#include <QGraphicsScene>
+#include "cannon.h"
+Player::Player(QWidget *parent) : QWidget(parent), isCannonSelected(false), cannon(nullptr), scene(nullptr)
+{
 
-// Player::Player(QWidget *parent) :
-//     QDialog(parent),
-//   //  ui(new Ui::Player),
-//     isCannonSelected(false)
-// {
-//    // ui->setupUi(this);
-// }
+}
 
-// Player::~Player()
-// {
-//    // delete ui;
-// }
+Player::~Player()
+{
+    delete cannon;
+}
 
-// void Player::mousePressEvent(QMouseEvent *event)
-// {
-//     if (event->button() == Qt::LeftButton) {
-//         if (!isCannonSelected) {
-//             selectCannon(event->pos());
-//         } else {
-//             //launchCannonball(selectedCannonPosition, event->pos());
-//             isCannonSelected = false;
-//         }
-//     }
-// }
 
-// void Player::selectCannon(const QPoint& position)
-// {
-//     selectedCannonPosition = position;
-//     isCannonSelected = true;
-// }
+void Player::mousePressEvent(QMouseEvent *event)
+{
+  cannon->mousePressEvent(event);
+}
+
+void Player::selectCannon(const QPoint &position)
+{
+    if (cannon) {
+        delete cannon;
+        cannon = nullptr;
+    }
+
+    cannon = new Cannon(QPixmap(":/images/cannon.png"));
+    cannon->setPos(position.x(), position.y());
+    scene->addItem(cannon);
+}
+
+void Player::shootCannon(const QPoint &targetPosition)
+{
+    if (cannon) {
+        cannon->setBulletDirection(targetPosition.x(), targetPosition.y());
+        cannon->shootBullet();
+    }
+}

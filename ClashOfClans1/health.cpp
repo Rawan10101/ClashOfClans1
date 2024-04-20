@@ -1,74 +1,64 @@
 #include "health.h"
-#include <QGraphicsRectItem>
-#include <QGraphicsScene>
 
-Health::Health(){}
+Health::Health(QGraphicsScene* scene, int x, int y, int maxHealth)
+    : scene_(scene), maxHealth_(maxHealth), health_(maxHealth) {
+    baseRect_ = new QGraphicsRectItem(x, y, maxHealth/10, 20);
+    rect2_ = new QGraphicsRectItem(x, y, maxHealth/10, 20);
 
-void Health::setHealthBar(int x, int y)
-{
-    baseRect->setRect(x, y, maxHealth/10, 20); //drawing base rectangle
+    // Set up the base rectangle
     QPen blackPen(Qt::black);
     blackPen.setWidth(3);
     QBrush grayBrush(Qt::gray);
-    baseRect->setPen(blackPen);
-    baseRect->setBrush(grayBrush);
-    scene()->addItem(baseRect);
+    baseRect_->setPen(blackPen);
+    baseRect_->setBrush(grayBrush);
+    scene_->addItem(baseRect_);
 
-    rect2->setRect(x, y, maxHealth/10, 20); //drawing second rectangle
+    // Set up the health bar rectangle
     QBrush greenBrush(Qt::green);
-    rect2->setBrush(greenBrush);
-    scene()->addItem(rect2);
+    rect2_->setBrush(greenBrush);
+    scene_->addItem(rect2_);
+
+    updateHealthBar();
 }
 
-void Health::updateHealthBar() //called when health changes
-{
-    rect2->setRect(rect2->x(), rect2->y(), health/10, 20); //updates size of the health bar
-    QBrush greenBrush(Qt::green);
-    QBrush redBrush(Qt::red);
-    QBrush yellowBrush(Qt::darkYellow);
-    if (health <= maxHealth/4) //red if health is too low
-        rect2->setBrush(redBrush);
-    else
-        if (health <= maxHealth/2) //dark yellow if health is less than half
-            rect2->setBrush(yellowBrush);
-        else
-            rect2->setBrush(greenBrush); //green if health is more than half
-
-    scene()->addItem(rect2);
-
+int Health::getHealth() const {
+    return health_;
 }
 
-
-int Health::getHealth()
-{
-    return health;
+int Health::getMaxHealth() const {
+    return maxHealth_;
 }
 
-
-int Health::getMaxHealth()
-{
-    return maxHealth;
+void Health::setHealth(int newHealth) {
+    health_ = std::max(0, std::min(newHealth, maxHealth_));
+    updateHealthBar();
 }
 
-void Health::setHealth(int number)
-{
-    health = number;
+void Health::setMaxHealth(int newMaxHealth) {
+    maxHealth_ = std::max(1, newMaxHealth);
+    health_ = std::min(health_, maxHealth_);
+    updateHealthBar();
 }
 
-void Health::setMaxHealth(int number)
-{
-    maxHealth = number;
+void Health::decrementHealth() {
+    setHealth(health_ - 1);
 }
 
-void Health::decrementHealth()
-{
-    health--;
-    this->updateHealthBar();
-
+void Health::incrementHealth() {
+    setHealth(health_ + 1);
 }
 
-void Health::incrementHealth()
-{
-    health++;
-    this->updateHealthBar();
+void Health::updateHealthBar() {
+    // Update the size and color of the health bar
+    rect2_->setRect(rect2_->x(), rect2_->y(), health_/10, 20);
+
+    QBrush brush;
+    if (health_ <= maxHealth_/4) {
+        brush = QBrush(Qt::red);
+    } else if (health_ <= maxHealth_/2) {
+        brush = QBrush(Qt::darkYellow);
+    } else {
+        brush = QBrush(Qt::green);
+    }
+    rect2_->setBrush(brush);
 }

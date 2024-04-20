@@ -1,10 +1,13 @@
 #include "townhall.h"
-
+#include <QDebug>
 Townhall::Townhall(QPixmap pixmap)
 {
-    health->setMaxHealth(10); //adjust max health later
+    //health = new Health();
+    //health->setMaxHealth(10); //adjust max health later
     this->setPixmap(pixmap); //pixmap is sent from game.cpp
-    health->setHealthBar(this->x(), this->y());
+    qDebug() << "testing townhall";
+    //health->updateHealthBar();
+
     destroyed = 0; //bool variable to indicate if townhall got destroyed
 }
 

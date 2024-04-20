@@ -16,11 +16,18 @@ public:
     void mousePressEvent(QMouseEvent *event); //to release bullet on click
     void paintEvent(QPaintEvent* event); //for health bar
     void cannonAttacked(); //for handling collision with enemy
+    void setBulletDirection(int x, int y);
+    void shootBullet();
+
 
 private:
     Health* health;
     Bullet* bullet;
-
+    int bulletDirectionX;
+    int bulletDirectionY;
+    bool bulletMoving;
+    bool bulletFired;
+    QTimer *bulletTimer;
 };
 
 #endif // CANNON_H

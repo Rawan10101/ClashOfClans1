@@ -1,30 +1,34 @@
 #ifndef HEALTH_H
 #define HEALTH_H
 
-#include <QObject>
+#include <QGraphicsScene>
 #include <QGraphicsRectItem>
-#include <QGraphicsItem>
 
-class Health: public QObject, public QGraphicsItem
-{
+class Health : public QObject {
     Q_OBJECT
-public:
-    Health();
 
-    void setHealthBar(int x, int y);
-    int getHealth();
-    int getMaxHealth();
-    void setHealth(int);
-    void setMaxHealth(int);
+public:
+    Health(QGraphicsScene* scene, int x, int y, int maxHealth);
+
+    int getHealth() const;
+    int getMaxHealth() const;
+
+public slots:
+    void setHealth(int newHealth);
+    void setMaxHealth(int newMaxHealth);
     void decrementHealth();
     void incrementHealth();
+     void updateHealthBar();
 
 private:
-    int health;
-    int maxHealth;
-    QGraphicsRectItem * baseRect = new QGraphicsRectItem;
-    QGraphicsRectItem* rect2 = new QGraphicsRectItem;
-    void updateHealthBar(); //private bcuz it is only called by member functions
+
+
+    QGraphicsScene* scene_;
+    QGraphicsRectItem* baseRect_;
+    QGraphicsRectItem* rect2_;
+    int maxHealth_;
+    int health_;
+    Health* health;
 };
 
 #endif // HEALTH_H

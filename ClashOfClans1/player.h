@@ -1,32 +1,30 @@
-// #ifndef PLAYER_H
-// #define PLAYER_H
+ #ifndef PLAYER_H
+ #define PLAYER_H
 
-// #include <QDialog>
+#include <QDialog>
+#include "cannon.h"
+#include <QWidget>
+#include <QGraphicsScene>
 
-// namespace Ui {
-// class Player;
-// }
+class Player : public QWidget
+{
+    Q_OBJECT
+public:
+    explicit Player(QWidget *parent = nullptr);
+    ~Player();
 
-// class Player : public QDialog
-// {
-//     Q_OBJECT
+    void setScene(QGraphicsScene *gameScene);
 
-// public:
-//     explicit Player(QWidget *parent = nullptr);
-//     ~Player();
+protected:
+    void mousePressEvent(QMouseEvent *event);
 
-// protected:
-//     void mousePressEvent(QMouseEvent *event) override;
+private:
+    bool isCannonSelected;
+    QGraphicsScene *scene;
+    class Cannon *cannon;
 
-// private:
-//     Ui::Player *ui;
+    void selectCannon(const QPoint &position);
+    void shootCannon(const QPoint &targetPosition);
+};
 
-
-//     bool isCannonSelected;
-//     QPoint selectedCannonPosition;
-
-//     void selectCannon(const QPoint& position);
-
-// };
-
-// #endif // PLAYER_H
+#endif // PLAYER_H

@@ -3,32 +3,26 @@
 
 #include <QGraphicsScene>
 #include <QGraphicsRectItem>
+#include <QObject>
 
-class Health : public QObject {
+class Health : public QObject
+{
     Q_OBJECT
 
 public:
-    Health(QGraphicsScene* scene, int x, int y, int maxHealth);
+    Health();
+    Health(qreal value);
 
-    int getHealth() const;
-    int getMaxHealth() const;
-
-public slots:
-    void setHealth(int newHealth);
-    void setMaxHealth(int newMaxHealth);
-    void decrementHealth();
+    qreal getHealth();
+    qreal getMaxHealth();
+    void setMaxHealth(qreal newMaxHealth);
+    void reduceHealth(qreal value);
     void incrementHealth();
-     void updateHealthBar();
+
 
 private:
-
-
-    QGraphicsScene* scene_;
-    QGraphicsRectItem* baseRect_;
-    QGraphicsRectItem* rect2_;
-    int maxHealth_;
-    int health_;
-    Health* health;
+    qreal maxHealth;
+    qreal health;
 };
 
 #endif // HEALTH_H

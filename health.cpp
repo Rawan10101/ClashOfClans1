@@ -1,64 +1,35 @@
-#include "health.h"
+r#include "health.h"
 
-Health::Health(QGraphicsScene* scene, int x, int y, int maxHealth)
-    : scene_(scene), maxHealth_(maxHealth), health_(maxHealth) {
-    baseRect_ = new QGraphicsRectItem(x, y, maxHealth/10, 20);
-    rect2_ = new QGraphicsRectItem(x, y, maxHealth/10, 20);
-
-    // Set up the base rectangle
-    QPen blackPen(Qt::black);
-    blackPen.setWidth(3);
-    QBrush grayBrush(Qt::gray);
-    baseRect_->setPen(blackPen);
-    baseRect_->setBrush(grayBrush);
-    scene_->addItem(baseRect_);
-
-    // Set up the health bar rectangle
-    QBrush greenBrush(Qt::green);
-    rect2_->setBrush(greenBrush);
-    scene_->addItem(rect2_);
-
-    updateHealthBar();
+Health::Health()
+{
+    maxHealth = 10;
+    health = maxHealth;
 }
 
-int Health::getHealth() const {
-    return health_;
+Health::Health(qreal value)
+{
+    maxHealth = value;
+    health = maxHealth;
 }
 
-int Health::getMaxHealth() const {
-    return maxHealth_;
+qreal Health::getHealth() {
+    return health;
 }
 
-void Health::setHealth(int newHealth) {
-    health_ = std::max(0, std::min(newHealth, maxHealth_));
-    updateHealthBar();
+qreal Health::getMaxHealth() {
+    return maxHealth;
 }
 
-void Health::setMaxHealth(int newMaxHealth) {
-    maxHealth_ = std::max(1, newMaxHealth);
-    health_ = std::min(health_, maxHealth_);
-    updateHealthBar();
+void Health::setMaxHealth(qreal newMaxHealth) {
+    maxHealth = newMaxHealth;
+    health = maxHealth;
+
 }
 
-void Health::decrementHealth() {
-    setHealth(health_ - 1);
+void Health::reduceHealth(qreal value) {
+    health -= value;
 }
 
 void Health::incrementHealth() {
-    setHealth(health_ + 1);
-}
-
-void Health::updateHealthBar() {
-    // Update the size and color of the health bar
-    rect2_->setRect(rect2_->x(), rect2_->y(), health_/10, 20);
-
-    QBrush brush;
-    if (health_ <= maxHealth_/4) {
-        brush = QBrush(Qt::red);
-    } else if (health_ <= maxHealth_/2) {
-        brush = QBrush(Qt::darkYellow);
-    } else {
-        brush = QBrush(Qt::green);
-    }
-    rect2_->setBrush(brush);
+    health += 1;
 }

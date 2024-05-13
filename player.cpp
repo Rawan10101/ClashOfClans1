@@ -24,7 +24,7 @@ void Player::selectCannon(const QPoint &position)
         cannon = nullptr;
     }
 
-    cannon = new Cannon(QPixmap(":/images/cannon.png"));
+    cannon = new Cannon();
     cannon->setPos(position.x(), position.y());
     scene->addItem(cannon);
 }

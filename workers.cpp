@@ -1,80 +1,95 @@
 #include "workers.h"
+#include "troop.h"
+#include "game.h"
+#include <QRandomGenerator>
+#include <QGraphicsItem>
 
-#include <QTimer>
-#include <QList>
-#include <QGraphicsScene>
-#include <QGraphicsPathItem>
-#include <QtMath>
 
-Workers::Workers(QGraphicsItem *parent)
-    : QObject(), QGraphicsPixmapItem(parent), isDestroyed(false)
+
+Workers::Workers() : targetFence(nullptr)
 {
-    QPixmap workerImage(":/images/Worker.png");
+    QPixmap workerImage(":/images/citizenworker.png");
     setPixmap(workerImage.scaled(30, 30));
 
-    QTimer* timer = new QTimer(this);
-    connect(timer, SIGNAL(timeout()), this, SLOT(rebuildStructure()));
-    timer->start(100);
+    workerTimer = new QTimer();
+    connect(workerTimer,SIGNAL(timeout()),this,SLOT (move()));
+    // isDestroyed = false;
+
+    danceTimer = new QTimer;
+    connect(danceTimer, SIGNAL(timeout()), this, SLOT(dance()));
+    dTimer = new QTimer;
+    connect(dTimer, SIGNAL(timeout()), this, SLOT(danceUtil()));
+    dTimer->start(300);
+
 }
 
-void Workers::showWorker()
+void Workers::setFence(Fence1* fence)
 {
-    setVisible(true);
+    targetFence = fence;
 }
 
-void Workers::hideWorker()
+void Workers::dance()
 {
-    setVisible(false);
+    dancing = true;
+    danceTimer->start(300);
+    setPos(x(), y()-15);
+
 }
 
-void Workers::rebuildStructure(QPointF targetPoint)
+void Workers::danceUtil()
 {
-    // Check if there is a destroyed structure
-    if (!isDestroyed)
+    if (dancing)
+        setPos(x(), y()+15);
+}
+
+
+void Workers::move()
+{
+
+
+    if (targetFence->destroyed || targetFence->fenceHealth->getHealth() >= targetFence->fenceHealth->getMaxHealth())
     {
-        // If no structure is destroyed, hide the worker and return
-        hideWorker();
+        qDebug() << "here";
+        workerTimer->stop();
+        delete this;
         return;
     }
 
-    // Show the worker if there is a destroyed structure
-    showWorker();
+    // move to the fence
+    QPointF direction = targetFence->pos() - this->pos();
+    direction /= QVector2D(direction).length();
+    qreal dx = direction.x() * 10;
+    qreal dy = direction.y() * 10;
+    setPos(x() + dx, y() + dy);
 
-    targetPosition = targetPoint;
-
-    // Find the shortest path to the target position
-    QList<QGraphicsItem*> obstacles = scene()->items();
-    qreal shortestPath = std::numeric_limits<qreal>::max();
-    qreal currentPath;
-
-    foreach (QGraphicsItem* obstacle, obstacles)
+    if (collidesWithItem(targetFence)) //if worker has reached fence
     {
-        if (obstacle != this && obstacle->type() == QGraphicsPathItem::Type)
-        {
-            currentPath = qSqrt(qPow(targetPosition.x() - obstacle->pos().x(), 2) +
-                                qPow(targetPosition.y() - obstacle->pos().y(), 2));
+        fixFence();
+    }
+}
 
-            if (currentPath < shortestPath)
-            {
-                shortestPath = currentPath;
-            }
-        }
+void Workers::fixFence()
+{
+    if (targetFence->fenceType == "vertical")
+    {
+        if (this->x() > targetFence->x()) //on the left fence
+            this->setPos(x() + 20, y());
+        else
+            this->setPos(x() - 20, y());
+
+
+    }
+    else
+    {
+        if (this->y() > targetFence->y()) //on the top fence
+            this->setPos(x(), y() + 20);
+        else
+            this->setPos(x(), y() - 20);
     }
 
-    // Move along the road to the target position
-    if (shortestPath != std::numeric_limits<qreal>::max())
+    if (targetFence->fenceHealth->getHealth() < targetFence->fenceHealth->getMaxHealth())
     {
-        setPos(mapToParent(shortestPath, 0));
+        targetFence->fenceHealth->incrementHealth();
     }
 
-    // Check if the workers have reached the target position
-    if (pos() == targetPosition)
-    {
-        // ... Perform the rebuilding process ...
-
-        // Reset the target position
-        targetPosition = QPointF();
-        isDestroyed = false;
-        hideWorker();
-    }
 }

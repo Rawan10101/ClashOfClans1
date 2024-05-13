@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/S"/>
+    <qresource prefix="/">
+        <file>Sound files/buttonclick.wav</file>
+        <file>Sound files/win.wav</file>
+        <file>Sound files/lose.wav</file>
+        <file>Sound files/bullet.wav</file>
+        <file>Sound files/enemyHit.wav</file>
+        <file>Sound files/booster.wav</file>
+        <file>Sound files/money.mp3</file>
+        <file>Sound files/background music.mp3</file>
+        <file>../../../Voicy_Coins-collect-Clash-of-Clans.wav</file>
+    </qresource>
+</RCC>

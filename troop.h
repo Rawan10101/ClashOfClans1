@@ -1,23 +1,39 @@
 #ifndef TROOP_H
 #define TROOP_H
 
-#include <QDialog>
+#include <QGraphicsPixmapItem>
 #include <QObject>
+#include <QGraphicsScene>
+#include "health.h"
 
-namespace Ui {
-class Troop;
-}
-
-class Troop : public QObject
+class Troop : public QObject, public QGraphicsPixmapItem
 {
     Q_OBJECT
 
 public:
-    explicit Troop(QWidget *parent = nullptr);
-    ~Troop();
+    Troop(qreal health, qreal power, int level);
+    bool remove;
+    void stop();
+    qreal speed;
+    Health* troopHealth;
+    void knockBack(qreal X, qreal Y);
+    qreal troopPower;
+    QPair<int, int> currGridPosition;
+    QVector<QPair<int, int>> Path;
+    bool moving = false;
+
+public slots:
+    void dance();
 
 private:
-    Ui::Troop *ui;
+    QTimer* m_timer;
+    QTimer* danceTimer;
+    QTimer* dTimer;
+    bool dancing = false;
+
+private slots:
+    void danceUtil();
+
 };
 
 #endif // TROOP_H

@@ -5,8 +5,26 @@
         <file>images/Cannon.png</file>
         <file>images/Castle.png</file>
         <file>images/Wall.png</file>
-        <file>images/Worker.png</file>
-        <file>File.txt</file>
         <file>images/Background.png</file>
+        <file>images/Barbarian1.png</file>
+        <file>images/pause.png</file>
+        <file>images/booster.png</file>
+        <file>images/citizenworker.png</file>
+        <file>images/shopbg.jpg</file>
+        <file>images/Town_Hall9.png</file>
+        <file>images/Wall3.png</file>
+        <file>images/Cannon10B.png</file>
+        <file>images/startbg.jpg</file>
+        <file>images/bg.jpg</file>
+        <file>images/cake1.png</file>
+        <file>images/cake2.png</file>
+        <file>images/human.png</file>
+        <file>images/level1fly.png</file>
+        <file>images/level2ant.png</file>
+        <file>images/level3grass.png</file>
+        <file>images/level4roach.png</file>
+        <file>images/level5rat.png</file>
+        <file>images/slipper.png</file>
+        <file>images/woman2.png</file>
     </qresource>
 </RCC>
